@@ -1,8 +1,7 @@
-import type {Finite, NegativeInfinity, PositiveInfinity} from '../numeric.d.ts';
+import type {NegativeInfinity, PositiveInfinity} from '../numeric.d.ts';
 import type {UnknownArray} from '../unknown-array.d.ts';
 import type {TupleOf} from '../tuple-of.d.ts';
-import type {IfNotAnyOrNever, IsAnyOrNever} from './type.d.ts';
-import type {UnwrapBrand} from './object.d.ts';
+import type {IfNotAnyOrNever} from './type.d.ts';
 
 /**
 Check whether the given type is a number or a number string.
@@ -34,45 +33,6 @@ export type IsNumberLike<N> =
 		ifAny: boolean;
 		ifNever: false;
 	}>;
-
-/**
-Returns the minimum number in the given union of numbers.
-
-Note: Just supports numbers from 0 to 998. A larger value exceeds TypeScript's recursion limit, because the implementation counts upward one tuple element at a time.
-
-@example
-```
-type A = UnionMin<1 | 3 | 2>;
-//=> 1
-
-type B = UnionMin<number>;
-//=> number
-
-type C = UnionMin<any>;
-//=> any
-
-type D = UnionMin<never>;
-//=> never
-```
-*/
-export type UnionMin<N extends number> =
-	UnionMinImplementation<N extends object ? UnwrapBrand<N> : N>;
-
-// Normalize the candidates once so the counter can match branded values.
-type UnionMinImplementation<N extends number> =
-	IsAnyOrNever<N> extends true ? N
-		: `${number}` extends `${N}` ? number
-			: NegativeInfinity extends N ? NegativeInfinity
-				: [N] extends [PositiveInfinity] ? PositiveInfinity
-					: InternalUnionMin<Finite<N>>;
-
-/**
-The actual implementation of `UnionMin`. It's private because it has some arguments that don't need to be exposed.
-*/
-type InternalUnionMin<N extends number, T extends UnknownArray = []> =
-	T['length'] extends N
-		? T['length']
-		: InternalUnionMin<N, [...T, unknown]>;
 
 /**
 Returns the number with reversed sign.
