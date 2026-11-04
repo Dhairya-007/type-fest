@@ -1,6 +1,5 @@
 import {expectTypeOf} from 'nz';
-import type {UnionMin} from '../../source/internal/numeric.d.ts';
-import type {NegativeInfinity, PositiveInfinity, Tagged} from '../../index.d.ts';
+import type {NegativeInfinity, PositiveInfinity, Tagged, UnionMin} from '../index.d.ts';
 
 expectTypeOf<UnionMin<1 | 3 | 2>>().toBe<1>();
 expectTypeOf<UnionMin<10 | 5 | 2>>().toBe<2>();
