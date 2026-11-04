@@ -35,6 +35,7 @@ type Unlimited = UnionMax<1 | 5 | PositiveInfinity>;
 
 The implementation counts upward using a tuple, removing lower union members until only the maximum remains. Infinity, non-literal inputs, and a single known value are handled before counting.
 
+@see {@link UnionMin}
 @see https://github.com/sindresorhus/type-fest/issues/676
 @category Numeric
 */
